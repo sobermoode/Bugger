@@ -32,22 +32,53 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function( startX, startY )
 {
+    // image chosen for the player
     this.sprite = 'images/char-boy.png';
+
+    // player will start at the given location
     this.x = startX;
     this.y = startY;
+
+    // initialize the movement to zero
     this.changeX = 0;
     this.changeY = 0;
 
     return this;
 };
 
-Player.prototype.update = function( dt )
+Player.prototype.update = function()
 {
-    // this.x *= dt;
-    // this.y *= dt;
-    this.x += this.changeX;
-    this.y += this.changeY;
+    // player attempts to move off the left edge of the board
+    if( this.x + this.changeX < 0 )
+    {
+        this.x = 0;
+    }
 
+    // player attempts to move off the right edge of the board
+    else if( this.x + this.changeX > 404 )
+    {
+        this.x = 404;
+    }
+
+    // player attempts to move off the top edge of the board
+    else if( this.y + this.changeY < 0 )
+    {
+        this.y = 0;
+    }
+
+    // player attempts to move off the bottom edge of the board
+    else if( this.y + this.changeY > 435 )
+    {
+        this.y = 435;
+    }
+
+    else
+    {
+        this.x += this.changeX;
+        this.y += this.changeY;
+    }
+
+    // reset current movement
     this.changeX = 0;
     this.changeY = 0;
 }
@@ -57,6 +88,8 @@ Player.prototype.render = function()
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
+// this function uses the even listener defined below to determine
+// how which key was pressed and then how to move the player
 Player.prototype.handleInput = function( key )
 {
     switch( key )
@@ -89,7 +122,7 @@ var enemy2 = new Enemy(2, 2);
 var allEnemies = [ enemy1, enemy2 ];
 
 // Place the player object in a variable called player
-var player = new Player( 0, 6 );
+var player = new Player( 100, 106 );
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
