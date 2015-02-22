@@ -1,16 +1,31 @@
 // Enemies our player must avoid
-var Enemy = function( locX, locY ) {
+var Enemy = function( startX, startY ) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.x = locX;
-    this.y = locY;
+    this.x = startX;
+    this.y = startY;
+
+    // the standard movement factor is 1, otherwise, the
+    // bugs move too slowly, +1 is added to the random
+    // number generated for the initial speed. some bugs
+    // may be fast and move at double speed.
+    var isFast = Math.floor( Math.random() + 2 );
+    if( isFast == 2 )
+    {
+        this.speed = ( Math.random() + 1 ) * 2;
+    }
+
+    else
+    {
+        this.speed = Math.random() + 1;
+    }
 
     return this;
-};
+}
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -18,8 +33,16 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x *= dt;
-    this.y *= dt;
+    this.x += ( this.speed * dt );
+
+    // check to see if the bug has gone off the right edge;
+    // if so, put it back on the left side
+    // it's speed is re-randomized, as well
+    if( ( this.x * 101 ) > 505 )
+    {
+        this.x = 0;
+        this.speed = Math.random() + 1;
+    }
 }
 
 // Draw the enemy on the screen, required method for game
@@ -85,29 +108,32 @@ Player.prototype.update = function()
 
 Player.prototype.render = function()
 {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage( Resources.get( this.sprite ), this.x, this.y );
 }
 
 // this function uses the even listener defined below to determine
-// how which key was pressed and then how to move the player
+// which key was pressed and then how to move the player
+// original movement was X:+-83 / Y:+-101 -
+// +=30 gives the player more control and the game becomes
+// more fast-paced.
 Player.prototype.handleInput = function( key )
 {
     switch( key )
     {
         case 'left':
-            this.changeX = -83;
+            this.changeX = -30;
             break;
 
         case 'up':
-            this.changeY = -101;
+            this.changeY = -30;
             break;
 
         case 'right':
-            this.changeX = 83;
+            this.changeX = 30;
             break;
 
         case 'down':
-            this.changeY = 101;
+            this.changeY = 30;
             break;
 
         default:
@@ -117,12 +143,20 @@ Player.prototype.handleInput = function( key )
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
-var enemy1 = new Enemy(1, 1);
-var enemy2 = new Enemy(2, 2);
-var allEnemies = [ enemy1, enemy2 ];
+
+// number of enemies to start with
+var totalEnemies = 5;
+var allEnemies = [];
+
+// add the enemies to the allEnemies array
+// the counter determines which row the enemy appears on
+for( var enemyCounter = 0; enemyCounter < totalEnemies; enemyCounter++ )
+{
+    allEnemies.push( new Enemy( 0, enemyCounter ) );
+}
 
 // Place the player object in a variable called player
-var player = new Player( 100, 106 );
+var player = new Player( 200, 600 );
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
