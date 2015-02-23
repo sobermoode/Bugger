@@ -80,7 +80,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
 
     /* This is called by the update function  and loops through all of the
@@ -95,6 +95,23 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+    }
+
+    function checkCollisions()
+    {
+        // loop through every enemy and check whether or not any
+        // of them are touching the player. if so, game over.
+        // code from:
+        // http://stackoverflow.com/questions/2752349/fast-rectangle-to-rectangle-intersection/2752387#2752387
+        allEnemies.forEach( function( enemy )
+        {
+            if( !( enemy.x > player.x + 81 || enemy.x + 81 < player.x ||
+                    enemy.y > player.y + 151 || enemy.y + 83 < player.y ) )
+            {
+                // alert( "Touched a bug!!!" );
+                init();
+            }
+        } );
     }
 
     /* This function initially draws the "game level", it will then call
@@ -180,7 +197,6 @@ var Engine = (function(global) {
      * object when run in a browser) so that developer's can use it more easily
      * from within their app.js files.
      */
-    // global.canvas = canvas;
     global.ctx = ctx;
 })(this);
 

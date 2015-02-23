@@ -7,24 +7,36 @@ var Enemy = function( startX, startY ) {
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     this.x = startX;
-    this.y = startY;
+    this.y = startY * 83; // each enemy appears on the next row
 
-    // the standard movement factor is 1, otherwise, the
-    // bugs move too slowly, +1 is added to the random
-    // number generated for the initial speed. some bugs
-    // may be fast and move at double speed.
-    var isFast = Math.floor( Math.random() + 2 );
-    if( isFast == 2 )
+    // enemy speed can vary between 25 and 150;
+    // some bugs may be fast and can have a speed
+    // of up to 200;
+    // getSpeed() returns a random value based on
+    // this criteria
+    this.speed = this.getSpeed();
+
+    return this;
+}
+
+Enemy.prototype.getSpeed = function()
+{
+    var isFast = Math.floor( ( Math.random() * 2 ) + 1 );
+    var speed;
+
+    // determination if the enemy is "fast";
+    // base speed and max speed is increased by 25
+    if( isFast === 2 )
     {
-        this.speed = ( Math.random() + 1 ) * 2;
+        speed = Math.floor( ( Math.random() * 175 ) + 50 );
     }
 
     else
     {
-        this.speed = Math.random() + 1;
+        speed = Math.floor( ( Math.random() * 150 ) + 25 );
     }
 
-    return this;
+    return speed;
 }
 
 // Update the enemy's position, required method for game
@@ -38,16 +50,16 @@ Enemy.prototype.update = function(dt) {
     // check to see if the bug has gone off the right edge;
     // if so, put it back on the left side
     // it's speed is re-randomized, as well
-    if( ( this.x * 101 ) > 505 )
+    if( ( this.x + 101 ) > 588 )
     {
         this.x = 0;
-        this.speed = Math.random() + 1;
+        this.speed = this.getSpeed();
     }
 }
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x * 101, this.y * 83);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
 // Now write your own player class
