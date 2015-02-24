@@ -1,12 +1,13 @@
 // Enemies our player must avoid
-var Enemy = function( startX, startY ) {
+var Enemy = function( startY, orientation ) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
-    this.x = startX;
+    this.orientation = ( orientation % 2 === 0 ) ? "going right" : "going left";
+    this.sprite = ( this.orientation === "going right" ) ? 'images/enemy-bug.png' : 'images/enemy-bug-R.png';
+    this.x = ( this.orientation === "going right" ) ? -101 : 589;
     this.y = startY * 83; // each enemy appears on the next row
 
     // enemy speed can vary between 25 and 150;
@@ -22,7 +23,7 @@ var Enemy = function( startX, startY ) {
 Enemy.prototype.getSpeed = function()
 {
     var isFast = Math.floor( ( Math.random() * 2 ) + 1 );
-    var speed;
+    var speed = 0;
 
     // determination if the enemy is "fast";
     // base speed and max speed is increased by 25
@@ -36,6 +37,9 @@ Enemy.prototype.getSpeed = function()
         speed = Math.floor( ( Math.random() * 150 ) + 25 );
     }
 
+    // multiply speed by -1 if the bug is "going left"
+    speed *= ( this.orientation === "going right" ) ? 1 : -1;
+
     return speed;
 }
 
@@ -47,13 +51,27 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     this.x += ( this.speed * dt );
 
-    // check to see if the bug has gone off the right edge;
-    // if so, put it back on the left side
+    // check to see if the bug has gone off its respective edge;
+    // if so, put it back in its starting position;
     // it's speed is re-randomized, as well
-    if( ( this.x + 101 ) > 588 )
+    if( this.orientation === "going right" )
     {
-        this.x = 0;
-        this.speed = this.getSpeed();
+        if( this.x > 588 )
+        {
+            this.x = -101;
+            this.speed = this.getSpeed();
+            return;
+        }
+    }
+
+    else if( this.orientation === "going left" )
+    {
+        if( this.x < -101 )
+        {
+            this.x = 589;
+            this.speed = this.getSpeed();
+            return;
+        }
     }
 }
 
@@ -164,7 +182,7 @@ var allEnemies = [];
 // the counter determines which row the enemy appears on
 for( var enemyCounter = 0; enemyCounter < totalEnemies; enemyCounter++ )
 {
-    allEnemies.push( new Enemy( 0, enemyCounter ) );
+    allEnemies.push( new Enemy( enemyCounter, Math.floor( ( Math.random() * 100 ) + 1 ) ) );
 }
 
 // Place the player object in a variable called player
