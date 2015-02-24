@@ -80,6 +80,15 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
+// reset() re-randomizes all the bug's attributes and puts it offscreen
+Enemy.prototype.reset = function( orientation )
+{
+    this.orientation = ( orientation % 2 === 0 ) ? "going right" : "going left";
+    this.sprite = ( this.orientation === "going right" ) ? 'images/enemy-bug.png' : 'images/enemy-bug-R.png';
+    this.x = ( this.orientation === "going right" ) ? -101 : 589;
+    this.speed = this.getSpeed();
+}
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
@@ -169,6 +178,16 @@ Player.prototype.handleInput = function( key )
         default:
             break;
     }
+}
+
+// reset() puts the player back at the starting position with no movement values
+Player.prototype.reset = function()
+{
+    this.x = 200;
+    this.y = 600;
+
+    this.changeX = 0;
+    this.changeY = 0;
 }
 
 // Now instantiate your objects.

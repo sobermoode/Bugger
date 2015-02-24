@@ -102,14 +102,12 @@ var Engine = (function(global) {
         // loop through every enemy and check whether or not any
         // of them are touching the player. if so, game over.
         // code from:
-        // http://stackoverflow.com/questions/2752349/fast-rectangle-to-rectangle-intersection/2752387#2752387
+        // https://github.com/joseterrera/frogger/blob/gh-pages/js/engine.js
         allEnemies.forEach( function( enemy )
         {
-            if( !( enemy.x > player.x + 81 || enemy.x + 81 < player.x ||
-                    enemy.y > player.y + 151 || enemy.y + 83 < player.y ) )
+            if( player.x < enemy.x + 60 && player.x + 60 > enemy.x && player.y < enemy.y + 50 && player.y + 50 > enemy.y )
             {
-                // alert( "Touched a bug!!!" );
-                init();
+                reset();
             }
         } );
     }
@@ -178,6 +176,11 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
+        player.reset();
+        allEnemies.forEach( function( enemy )
+        {
+            enemy.reset( Math.floor( ( Math.random() * 100 ) + 1 ) );
+        });
     }
 
     /* Go ahead and load all of the images we know we're going to need to
