@@ -168,6 +168,7 @@ var Engine = (function(global) {
         });
 
         player.render();
+        gem.render();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -193,7 +194,8 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/enemy-bug-R.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/Gem Orange.png'
     ]);
     Resources.onReady(init);
 

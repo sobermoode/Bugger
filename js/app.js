@@ -27,20 +27,12 @@ Enemy.prototype.getOrientation = function()
 // some bugs may be fast and can have a speed of up to 200
 Enemy.prototype.getSpeed = function()
 {
-    var isFast = Math.floor( ( Math.random() * 2 ) + 1 );
-    var speed = 0;
-
     // determination if the enemy is "fast";
     // base speed and max speed is increased by 25
-    if( isFast === 2 )
-    {
-        speed = Math.floor( ( Math.random() * 175 ) + 50 );
-    }
+    var isFast = Math.floor( ( Math.random() * 2 ) + 1 );
 
-    else
-    {
-        speed = Math.floor( ( Math.random() * 150 ) + 25 );
-    }
+    var speed = 0;
+    speed = ( isFast === 2 ) ? Math.floor( ( Math.random() * 175 ) + 50 ) : Math.floor( ( Math.random() * 150 ) + 25 );
 
     // multiply speed by -1 if the bug is "going left"
     speed *= ( this.orientation === "going right" ) ? 1 : -1;
@@ -193,6 +185,24 @@ Player.prototype.reset = function()
     this.changeY = 0;
 }
 
+var Gem = function()
+{
+    this.sprite = "images/Gem Orange.png";
+
+    // gems appear at random X locations and
+    // on the same rows as the bugs;
+    // gems won't initially appear on the bottom row with the player
+    this.x = Math.floor( ( Math.random() * 404 ) + 1 );
+    this.y = Math.floor( ( Math.random() * 4 ) + 1 ) * 83;
+
+    this.scoreValue = 1;
+}
+
+Gem.prototype.render = function()
+{
+    ctx.drawImage( Resources.get( this.sprite ), this.x, this.y );
+}
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 
@@ -210,6 +220,8 @@ for( var enemyCounter = 0; enemyCounter < totalEnemies; enemyCounter++ )
 
 // Place the player object in a variable called player
 var player = new Player( 200, 600 );
+
+var gem = new Gem();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
