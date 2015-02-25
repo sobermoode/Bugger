@@ -203,6 +203,12 @@ Gem.prototype.render = function()
     ctx.drawImage( Resources.get( this.sprite ), this.x, this.y );
 }
 
+Gem.prototype.reset = function()
+{
+    this.x = Math.floor( ( Math.random() * 404 ) + 1 );
+    this.y = Math.floor( ( Math.random() * 4 ) + 1 ) * 83;
+}
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 

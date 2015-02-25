@@ -110,6 +110,12 @@ var Engine = (function(global) {
                 reset();
             }
         } );
+
+        if( player.x < gem.x + 60 && player.x + 60 > gem.x && player.y < gem.y + 50 && player.y + 50 > gem.y )
+        {
+            gem.reset();
+            // console.log( "Score!!!" );
+        }
     }
 
     /* This function initially draws the "game level", it will then call
@@ -182,6 +188,7 @@ var Engine = (function(global) {
         {
             enemy.reset( Math.floor( ( Math.random() * 100 ) + 1 ) );
         });
+        gem.reset();
     }
 
     /* Go ahead and load all of the images we know we're going to need to
