@@ -1,25 +1,30 @@
 // Enemies our player must avoid
-var Enemy = function( startY, orientation ) {
+var Enemy = function( startY ) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.orientation = ( orientation % 2 === 0 ) ? "going right" : "going left";
+    this.orientation = this.getOrientation();
     this.sprite = ( this.orientation === "going right" ) ? 'images/enemy-bug.png' : 'images/enemy-bug-R.png';
     this.x = ( this.orientation === "going right" ) ? -101 : 589;
     this.y = startY * 83; // each enemy appears on the next row
 
-    // enemy speed can vary between 25 and 150;
-    // some bugs may be fast and can have a speed
-    // of up to 200;
-    // getSpeed() returns a random value based on
-    // this criteria
     this.speed = this.getSpeed();
 
     return this;
 }
 
+// getOrientation() will determine if the bug starts on the left and travels right
+// or if the bug starts on the right and travels left
+Enemy.prototype.getOrientation = function()
+{
+    var side = Math.floor( ( Math.random() * 2 ) + 1 );
+
+    return ( side === 1 ) ? "going right" : "going left";
+}
+
+// getSpeed() returns a value that determines how quickly the bug travels across the canvas
+// enemy speed can vary between 25 and 150;
+// some bugs may be fast and can have a speed of up to 200
 Enemy.prototype.getSpeed = function()
 {
     var isFast = Math.floor( ( Math.random() * 2 ) + 1 );
@@ -52,14 +57,13 @@ Enemy.prototype.update = function(dt) {
     this.x += ( this.speed * dt );
 
     // check to see if the bug has gone off its respective edge;
-    // if so, put it back in its starting position;
-    // it's speed is re-randomized, as well
+    // if so, reset the bug
+    // reset() may change orientation, speed, and where the bug starts
     if( this.orientation === "going right" )
     {
         if( this.x > 588 )
         {
-            this.x = -101;
-            this.speed = this.getSpeed();
+            this.reset();
             return;
         }
     }
@@ -68,8 +72,7 @@ Enemy.prototype.update = function(dt) {
     {
         if( this.x < -101 )
         {
-            this.x = 589;
-            this.speed = this.getSpeed();
+            this.reset();
             return;
         }
     }
@@ -83,7 +86,7 @@ Enemy.prototype.render = function() {
 // reset() re-randomizes all the bug's attributes and puts it offscreen
 Enemy.prototype.reset = function( orientation )
 {
-    this.orientation = ( orientation % 2 === 0 ) ? "going right" : "going left";
+    this.orientation = this.getOrientation();
     this.sprite = ( this.orientation === "going right" ) ? 'images/enemy-bug.png' : 'images/enemy-bug-R.png';
     this.x = ( this.orientation === "going right" ) ? -101 : 589;
     this.speed = this.getSpeed();
@@ -201,7 +204,8 @@ var allEnemies = [];
 // the counter determines which row the enemy appears on
 for( var enemyCounter = 0; enemyCounter < totalEnemies; enemyCounter++ )
 {
-    allEnemies.push( new Enemy( enemyCounter, Math.floor( ( Math.random() * 100 ) + 1 ) ) );
+    // enemyCounter determines the row the bug appears on
+    allEnemies.push( new Enemy( enemyCounter ) );
 }
 
 // Place the player object in a variable called player
