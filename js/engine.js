@@ -100,21 +100,28 @@ var Engine = (function(global) {
     function checkCollisions()
     {
         // loop through every enemy and check whether or not any
-        // of them are touching the player. if so, game over.
+        // of them are touching the player. if so, reset the game.
         // code from:
         // https://github.com/joseterrera/frogger/blob/gh-pages/js/engine.js
         allEnemies.forEach( function( enemy )
         {
-            if( player.x < enemy.x + 60 && player.x + 60 > enemy.x && player.y < enemy.y + 50 && player.y + 50 > enemy.y )
+            if( player.x < enemy.x + 60 && player.x + 60 > enemy.x && player.y < enemy.y + 60 && player.y + 50 > enemy.y )
             {
+                // global reset (player, bugs, gem, score)
                 reset();
             }
         } );
 
-        if( player.x < gem.x + 60 && player.x + 60 > gem.x && player.y < gem.y + 50 && player.y + 50 > gem.y )
+        // if the player collects the gem, increment player score, and respawn the gem in a different location
+        if( player.x < gem.x + 60 && player.x + 60 > gem.x && player.y < gem.y + 85 && player.y + 50 > gem.y )
         {
+            player.score++;
+
+            // update the score on the page
+            document.getElementById( "score" ).innerHTML = player.score;
+
+            // only reset the gem
             gem.reset();
-            // console.log( "Score!!!" );
         }
     }
 
@@ -184,6 +191,7 @@ var Engine = (function(global) {
     function reset() {
         // noop
         player.reset();
+        document.getElementById( "score" ).innerHTML = player.score;
         allEnemies.forEach( function( enemy )
         {
             enemy.reset( Math.floor( ( Math.random() * 100 ) + 1 ) );

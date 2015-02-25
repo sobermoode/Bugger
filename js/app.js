@@ -50,7 +50,7 @@ Enemy.prototype.update = function(dt) {
 
     // check to see if the bug has gone off its respective edge;
     // if so, reset the bug
-    // reset() may change orientation, speed, and where the bug starts
+    // reset() may change orientation, speed, and which side the bug starts on
     if( this.orientation === "going right" )
     {
         if( this.x > 588 )
@@ -100,6 +100,9 @@ var Player = function( startX, startY )
     this.changeX = 0;
     this.changeY = 0;
 
+    // current score
+    this.score = 0;
+
     return this;
 };
 
@@ -129,6 +132,7 @@ Player.prototype.update = function()
         this.y = 435;
     }
 
+    // otherwise, move the player according to the directional button pressed
     else
     {
         this.x += this.changeX;
@@ -146,10 +150,8 @@ Player.prototype.render = function()
 }
 
 // this function uses the even listener defined below to determine
-// which key was pressed and then how to move the player
-// original movement was X:+-83 / Y:+-101 -
-// +=30 gives the player more control and the game becomes
-// more fast-paced.
+// which key was pressed and then how to move the player;
+// the player moves in 30px increments to make the game button-mashingly fast-paced
 Player.prototype.handleInput = function( key )
 {
     switch( key )
@@ -175,7 +177,7 @@ Player.prototype.handleInput = function( key )
     }
 }
 
-// reset() puts the player back at the starting position with no movement values
+// reset() puts the player back at the starting position, with no movement values, and zero score
 Player.prototype.reset = function()
 {
     this.x = 200;
@@ -183,6 +185,8 @@ Player.prototype.reset = function()
 
     this.changeX = 0;
     this.changeY = 0;
+
+    this.score = 0;
 }
 
 var Gem = function()
