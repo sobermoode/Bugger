@@ -1,0 +1,9 @@
+
+collision
+- http://stackoverflow.com/questions/13916966/adding-collision-detection-to-images-drawn-on-canvas
+- http://stackoverflow.com/questions/20846944/check-if-two-items-overlap-on-a-canvas-using-javascript, which pointed me to http://stackoverflow.com/questions/2752349/fast-rectangle-to-rectangle-intersection/2752387#2752387
+- I had a lot of trouble getting my player/bug collision to work correctly. I looked at the code from a member of my cohort to see how they implemented it in their own project. https://github.com/joseterrera/frogger 
+
+javascript
+forEach() - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
+Math.random() - http://www.w3schools.com/jsref/jsref_random.asp
