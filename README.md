@@ -20,3 +20,5 @@ Collect the gem to increase your score. When the gem is collected, another gem w
 location. The bugs will swarm from both the left and the right sides. The ones just off the hotdog cart might
 move relatively slow (the buns expand in the stomach). The hungrier bugs are feral and move much faster.
 Be careful not to get ambushed by a fresh bug coming in from just outside your field of view!!!
+
+Check it out at https://sobermoode.github.io/Bugger/
